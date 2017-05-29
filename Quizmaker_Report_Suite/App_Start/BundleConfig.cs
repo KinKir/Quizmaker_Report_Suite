@@ -23,9 +23,17 @@ namespace Quizmaker_Report_Suite
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/admin").Include(
+                      "~/Scripts/fastclick.js",
+                      "~/Scripts/nprogress.js",
+                      "~/Scripts/custom.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/font-awesome.min.css",
+                      "~/Content/site.css",
+                      "~/Content/nprogress.css",
+                      "~/Content/custom.min.css"));
         }
     }
 }

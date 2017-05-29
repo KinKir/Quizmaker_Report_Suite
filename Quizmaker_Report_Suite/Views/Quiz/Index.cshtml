@@ -1,0 +1,115 @@
+﻿@model IEnumerable<Quizmaker_Report_Suite.Models.Quiz>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Quiz Results</h3>
+        </div>
+        <div class="title_right">
+            @using (Html.BeginForm())
+            {
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        @Html.TextBox("SearchString", "", new { @class = "form-control", @placeholder = "Find By Name or Email" })
+
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+
+        @using (Html.BeginForm())
+        {
+
+            <div class="col-md-12 text-left">
+                @Html.DisplayNameFor(model => model.ProjectName):
+
+                @Html.DropDownList("ProjectName", new SelectList(ViewBag.ProjectNames, "Key", "Value"), "- Please Select -", new { @class = "dropdown-toggle", @onchange = "this.form.submit();" })
+            </div>
+
+        }
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-md-12 text-left">
+            <div class="x_panel">
+                <table class="table table-hover">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.QuizTitle)
+                        </th>
+                        <th>
+                            @Html.ActionLink(Html.DisplayNameFor(model => model.UserName).ToString(), "Index", new { sortOrder = ViewBag.NameSortParam })
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserEmail)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserScore)
+                        </th>
+                        <th>
+                            @Html.ActionLink(Html.DisplayNameFor(model => model.UsedTime).ToString(), "Index", new { sortOrder = ViewBag.UsedTimeSortParam })
+                        </th>
+                        <th>
+                            @Html.ActionLink(Html.DisplayNameFor(model => model.QuizDate).ToString(), "Index", new { sortOrder = ViewBag.DateSortParam })
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PassingScore)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PassingScorePercentage)
+                        </th>
+
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+            {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuizTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserEmail)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserScore)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UsedTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuizDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PassingScore)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PassingScorePercentage)
+                            </td>
+
+                            <td>
+                                @Html.ActionLink("Details", "Details", new { id = item.ID })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,144 @@
+﻿@model Quizmaker_Report_Suite.Models.Quiz
+
+<div class="">
+    <div class="page-title">
+        <div class="title_left">
+            <h3>Details</h3>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+        <div class="col-md-8 col-sm-8 col-xs-12">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Quiz details</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li>
+                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+
+
+
+                    <dl class="dl-horizontal">
+                        <dt>
+                            @Html.DisplayNameFor(model => model.QuizType)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.QuizType)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.QuizTitle)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.QuizTitle)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.PassingScore)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PassingScore)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.PassingScorePercentage)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PassingScorePercentage)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.UserName)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UserEmail)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.UserEmail)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UserScore)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.UserScore)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.DetailedResults)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.DetailedResults)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.EarnedPoints)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.EarnedPoints)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.GainedScore)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.GainedScore)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.QuizReport)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.QuizReport)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.TimeLimit)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.TimeLimit)
+                        </dd>
+
+                        <dt>
+                            @Html.DisplayNameFor(model => model.UsedTime)
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.UsedTime)
+                        </dd>
+
+                    </dl>
+
+                    <p>
+                        @Html.ActionLink("Back to List", "Index")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

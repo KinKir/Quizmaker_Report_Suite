@@ -11,15 +11,36 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Quizmaker_Report_Suite.Models;
+using System.Net.Mail;
+
 
 namespace Quizmaker_Report_Suite
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            await smtpSend(message);
+        }
+
+        private static async Task smtpSend(IdentityMessage message)
+        {
+
+
+            var msg = new MailMessage();
+            msg.To.Add(message.Destination);
+            msg.From = new MailAddress("caner@timeoutistanbul.com", "Caner Yogurtcular");
+            msg.Subject = message.Subject;
+            msg.Body = message.Body;
+            msg.IsBodyHtml = true;
+            using (var smtp = new SmtpClient())
+            {
+                await smtp.SendMailAsync(msg);
+
+            }
+
+
         }
     }
 
