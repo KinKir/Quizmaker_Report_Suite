@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Quizmaker_Report_Suite.Models.Quiz>
+﻿@model IEnumerable<Quizmaker_Report_Suite.Models.QuizResults>
 
 @{
     ViewBag.Title = "Index";
@@ -29,13 +29,19 @@
 
     <div class="row">
 
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("Index","Quiz",FormMethod.Get))
         {
 
-            <div class="col-md-12 text-left">
+            <div class="col-md-6 text-left">
                 @Html.DisplayNameFor(model => model.ProjectName):
 
-                @Html.DropDownList("ProjectName", new SelectList(ViewBag.ProjectNames, "Key", "Value"), "- Please Select -", new { @class = "dropdown-toggle", @onchange = "this.form.submit();" })
+                @Html.DropDownList("ProjectName", new SelectList(ViewBag.ProjectNames, "Key", "Value", ViewBag.CurrentProject), "- Please Select -", new { @class = "dropdown-toggle", @onchange = "this.form.submit();" })
+            </div>
+
+            <div class="col-md-6 text-left">
+                @Html.DisplayNameFor(model => model.QuizTitle):
+
+                @Html.DropDownList("QuizName", new SelectList(ViewBag.QuizNames, "Key", "Value", ViewBag.CurrentQuiz), "- Please Select -", new { @class = "dropdown-toggle", @onchange = "this.form.submit();" })
             </div>
 
         }
@@ -50,26 +56,21 @@
                             @Html.DisplayNameFor(model => model.QuizTitle)
                         </th>
                         <th>
-                            @Html.ActionLink(Html.DisplayNameFor(model => model.UserName).ToString(), "Index", new { sortOrder = ViewBag.NameSortParam })
+                            @Html.DisplayNameFor(model => model.UserName)
                         </th>
                         <th>
                             @Html.DisplayNameFor(model => model.UserEmail)
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.UserScore)
+                            @Html.ActionLink(Html.DisplayNameFor(model => model.EarnedPoints).ToString(), "Index", new { sortOrder = ViewBag.ScoreSortParam, currentProject = ViewBag.CurrentProject, currentQuiz = ViewBag.CurrentQuiz })
                         </th>
                         <th>
-                            @Html.ActionLink(Html.DisplayNameFor(model => model.UsedTime).ToString(), "Index", new { sortOrder = ViewBag.UsedTimeSortParam })
+                            @Html.ActionLink(Html.DisplayNameFor(model => model.UsedTime).ToString(), "Index", new { sortOrder = ViewBag.UsedTimeSortParam, currentProject = ViewBag.CurrentProject, currentQuiz = ViewBag.CurrentQuiz })
                         </th>
                         <th>
-                            @Html.ActionLink(Html.DisplayNameFor(model => model.QuizDate).ToString(), "Index", new { sortOrder = ViewBag.DateSortParam })
+                            @Html.ActionLink(Html.DisplayNameFor(model => model.QuizDate).ToString(), "Index", new { sortOrder = ViewBag.DateSortParam, currentProject = ViewBag.CurrentProject, currentQuiz = ViewBag.CurrentQuiz })
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PassingScore)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.PassingScorePercentage)
-                        </th>
+                        
 
                         <th></th>
                     </tr>
@@ -87,7 +88,7 @@
                                 @Html.DisplayFor(modelItem => item.UserEmail)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.UserScore)
+                                @Html.DisplayFor(modelItem => item.EarnedPoints)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.UsedTime)
@@ -95,12 +96,7 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.QuizDate)
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PassingScore)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PassingScorePercentage)
-                            </td>
+                            
 
                             <td>
                                 @Html.ActionLink("Details", "Details", new { id = item.ID })

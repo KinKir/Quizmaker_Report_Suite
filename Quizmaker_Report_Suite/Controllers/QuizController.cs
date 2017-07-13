@@ -16,29 +16,45 @@ namespace Quizmaker_Report_Suite.Controllers
         private DALContext db = new DALContext();
 
         // GET: Quiz
-        public ActionResult Index(string sortOrder, string searchString, string projectName)
+        public ActionResult Index(string sortOrder, string searchString, string projectName, string quizName, string currentQuiz, string currentProject)
         {
-            var projectNames = db.Quizs.Select(p => new { p.ProjectName }).ToDictionary(p => p.ProjectName, p => p.ProjectName);
+            /*var projectNames = db.Quizs.Select(p => new { p.ProjectName }).Distinct().ToDictionary(p => p.ProjectName, p => p.ProjectName);
+
+            var quizNames = db.Quizs.Select(q => new { q.QuizTitle }).Distinct().ToDictionary(q => q.QuizTitle, q => q.QuizTitle);
+
+            string currentProjectVal = (String.IsNullOrEmpty(projectName)) ? currentProject : projectName;
+            string currentQuizVal = (String.IsNullOrEmpty(quizName)) ? currentQuiz : quizName;
+
 
             ViewBag.ProjectNames = projectNames;
+            ViewBag.QuizNames = quizNames;
 
-            ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.CurrentProject = currentProjectVal;
+            ViewBag.CurrentQuiz = currentQuizVal;
+
+            ViewBag.ScoreSortParam = String.IsNullOrEmpty(sortOrder) ? "score_desc" : "";
             ViewBag.DateSortParam = sortOrder == "Date" ? "Date" : "date_desc";
             ViewBag.UsedTimeSortParam = sortOrder == "UsedTime" ? "UsedTime" : "used_time_desc";
 
             var quizes = from q in db.Quizs
+                         //orderby q.GainedScore descending,q.UsedTime,q.QuizDate
                          select q;
 
             if (!String.IsNullOrEmpty(searchString))
                 quizes = quizes.Where(q => q.UserName.Contains(searchString) || q.UserEmail.Contains(searchString));
 
-            if (!String.IsNullOrEmpty(projectName))
-                quizes = quizes.Where(q => q.ProjectName.Contains(projectName));
+            if (!String.IsNullOrEmpty(ViewBag.CurrentProject))
+                quizes = quizes.Where(q => q.ProjectName.Contains(currentProjectVal));
+            
+
+            if (!String.IsNullOrEmpty(ViewBag.CurrentQuiz))
+                quizes = quizes.Where(q => q.QuizTitle.Contains(currentQuizVal));
+            
 
             switch (sortOrder)
             {
-                case "name_desc":
-                    quizes = quizes.OrderByDescending(q => q.UserName);
+                case "score_desc":
+                    quizes = quizes.OrderByDescending(q => q.EarnedPoints);
                     break;
                 case "Date":
                     quizes = quizes.OrderBy(q => q.QuizDate);
@@ -53,13 +69,125 @@ namespace Quizmaker_Report_Suite.Controllers
                     quizes = quizes.OrderByDescending(q => q.UsedTime);
                     break;
                 default:
+                    quizes = quizes.OrderByDescending(q => q.EarnedPoints).ThenBy(q => q.UsedTime).ThenBy(q=>q.QuizDate);
+                    break;
+            }
+
+            return View(quizes.ToList());*/
+
+            var projectNames = db.Quizs.Select(p => new { p.ProjectName }).Distinct().ToDictionary(p => p.ProjectName, p => p.ProjectName);
+
+            var quizNames = db.Quizs.Select(q => new { q.QuizTitle }).Distinct().ToDictionary(q => q.QuizTitle, q => q.QuizTitle);
+
+            string currentProjectVal = (String.IsNullOrEmpty(projectName)) ? currentProject : projectName;
+            string currentQuizVal = (String.IsNullOrEmpty(quizName)) ? currentQuiz : quizName;
+
+
+            ViewBag.ProjectNames = projectNames;
+            ViewBag.QuizNames = quizNames;
+
+            ViewBag.CurrentProject = currentProjectVal;
+            ViewBag.CurrentQuiz = currentQuizVal;
+
+            ViewBag.ScoreSortParam = String.IsNullOrEmpty(sortOrder) ? "score_desc" : "";
+            ViewBag.DateSortParam = sortOrder == "Date" ? "Date" : "date_desc";
+            ViewBag.UsedTimeSortParam = sortOrder == "UsedTime" ? "UsedTime" : "used_time_desc";
+
+
+            /*IQueryable<QuizDateReportGroup> data = from quiz in db.Quizs
+                                                   select new QuizResults()
+                                                   {
+                                                       ID = quiz.ID,
+                                                       ProjectName = quiz.ProjectName,
+                                                       QuizTitle = quiz.QuizTitle,
+                                                       UserName = quiz.UserName,
+                                                       UserEmail = quiz.UserEmail,
+                                                       QuizDate=quiz.QuizDate,
+                                                       DetailedResults=quiz.DetailedResults,
+                                                       EarnedPoints=quiz.EarnedPoints,
+                                                       TimeLimit=quiz.TimeLimit,
+                                                       UsedTime=quiz.UsedTime
+                                                       
+                                                   };*/
+
+
+            var quizes = from q in db.Quizs.ToList()
+                         select new QuizResults()
+                         {
+                             ID = q.ID,
+                             ProjectName = q.ProjectName,
+                             QuizTitle = q.QuizTitle,
+                             UserName = q.UserName,
+                             UserEmail = q.UserEmail,
+                             QuizDate = q.QuizDate,
+                             DetailedResults = q.DetailedResults,
+                             EarnedPoints = int.Parse(q.EarnedPoints),
+                             TimeLimit = q.TimeLimit,
+                             UsedTime = int.Parse(q.UsedTime)
+                         };
+                         
+
+            if (!String.IsNullOrEmpty(searchString))
+                quizes = quizes.Where(q => q.UserName.Contains(searchString) || q.UserEmail.Contains(searchString));
+
+            if (!String.IsNullOrEmpty(ViewBag.CurrentProject))
+                quizes = quizes.Where(q => q.ProjectName.Contains(currentProjectVal));
+
+
+            if (!String.IsNullOrEmpty(ViewBag.CurrentQuiz))
+                quizes = quizes.Where(q => q.QuizTitle.Contains(currentQuizVal));
+            
+            switch (sortOrder)
+            {
+                case "score_desc":
+                    quizes = quizes.OrderByDescending(q => q.EarnedPoints);
+                    break;
+                case "Date":
                     quizes = quizes.OrderBy(q => q.QuizDate);
+                    break;
+                case "date_desc:":
+                    quizes = quizes.OrderByDescending(q => q.QuizDate);
+                    break;
+                case "UsedTime":
+                    quizes = quizes.OrderBy(q => q.UsedTime);
+                    break;
+                case "used_time_desc":
+                    quizes = quizes.OrderByDescending(q => q.UsedTime);
+                    break;
+                default:
+                    quizes = quizes.OrderByDescending(q => q.EarnedPoints).ThenBy(q => q.UsedTime).ThenBy(q => q.QuizDate);
                     break;
             }
 
             return View(quizes.ToList());
+
+            /*switch (sortOrder)
+            {
+                case "score_desc":
+                    quizes = quizes.OrderByDescending(q => q.EarnedPoints);
+                    break;
+                case "Date":
+                    quizes = quizes.OrderBy(q => q.QuizDate);
+                    break;
+                case "date_desc:":
+                    quizes = quizes.OrderByDescending(q => q.QuizDate);
+                    break;
+                case "UsedTime":
+                    quizes = quizes.OrderBy(q => q.UsedTime);
+                    break;
+                case "used_time_desc":
+                    quizes = quizes.OrderByDescending(q => q.UsedTime);
+                    break;
+                default:
+                    quizes = quizes.OrderByDescending(q => q.EarnedPoints).ThenBy(q => q.UsedTime).ThenBy(q => q.QuizDate);
+                    break;
+            }
+
+            return View(quizes.ToList());*/
         }
 
+        [ValidateInput(false)]
+        [AllowCrossSiteJson]
         public HttpStatusCodeResult SaveResult()
         {
 
